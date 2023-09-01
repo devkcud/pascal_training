@@ -1,0 +1,33 @@
+#!/bin/env bash
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <input>"
+    exit 1
+fi
+
+source_file="$1"
+
+if [ ! -f "$source_file" ]; then
+    echo "File not found: $source_file"
+    exit 1
+fi
+
+program_name="${source_file%.pas}"
+
+temp_dir="/tmp/pascal_program_$(date +%s)"
+mkdir -p "$temp_dir"
+
+cp "$source_file" "$temp_dir"
+
+cd "$temp_dir"
+
+fpc "$program_name.pas" >/dev/null 2>&1
+
+if [ $? -eq 0 ]; then
+    ./"$program_name"
+else
+    echo "Compilation failed"
+fi
+
+rm -rf "$temp_dir"
+cd - >/dev/null 2>&1
