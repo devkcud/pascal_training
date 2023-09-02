@@ -21,7 +21,7 @@ cp "$source_file" "$temp_dir"
 
 cd "$temp_dir"
 
-fpc "$program_name.pas" >/dev/null 2>&1
+fpc "$program_name.pas"
 
 if [ $? -eq 0 ]; then
     ./"$program_name"
